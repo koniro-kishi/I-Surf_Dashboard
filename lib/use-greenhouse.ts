@@ -9,7 +9,7 @@ import type { Profile } from "./auth-context";
  * Slave misting dianggap milik umum rumah kaca. Staff tidak boleh membaca seluruh
  * node `slaves`, jadi ID-nya dipatok di sini.
  */
-export const MISTING_SLAVE_ID = "slave0";
+export const MISTING_SLAVE_ID = "slave2";
 
 export type LatestValues = Record<string, number | boolean | string>;
 export type SlaveInfo = { id: string; slaveType: string | null };
