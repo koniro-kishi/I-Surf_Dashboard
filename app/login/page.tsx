@@ -3,16 +3,18 @@
 import { useEffect, useState, type SubmitEvent } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "../../lib/auth-context";
+import { LANDING } from "../../lib/nav";
 
 export default function LoginPage() {
   const router = useRouter();
-  const { status, authError, signIn } = useAuth();
+  const { status, profile, authError, signIn } = useAuth();
   const [submitting, setSubmitting] = useState(false);
 
-  // Sudah login (mis. buka /login lagi) -> langsung ke home
+  // Sudah login (mis. buka /login lagi) -> langsung ke halaman utama sesuai peran
   useEffect(() => {
-    if (status === "authenticated") router.replace("/home");
-  }, [status, router]);
+    if (status === "authenticated" && profile)
+      router.replace(LANDING[profile.role]);
+  }, [status, profile, router]);
 
   // Tombol tetap nonaktif sampai profil dimuat dan redirect terjadi,
   // atau sampai ada error yang perlu ditampilkan.
