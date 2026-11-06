@@ -75,3 +75,14 @@ const timeFmt = new Intl.DateTimeFormat("id-ID", {
 export function formatBucketTime(ts: number): string {
   return timeFmt.format(new Date(ts * 1000));
 }
+
+const instantFmt = new Intl.DateTimeFormat("id-ID", {
+  timeZone: "Asia/Jakarta",
+  dateStyle: "medium",
+  timeStyle: "medium",
+});
+
+/** ts = epoch UTC (detik). Tampil dalam WIB hingga detik. */
+export function formatInstantTime(ts: number): string {
+  return instantFmt.format(new Date(ts * 1000));
+}

@@ -7,6 +7,13 @@ import {
   type LatestValues,
   type SlaveInfo,
 } from "@/lib/use-greenhouse";
+import { formatInstantTime } from "@/lib/history-format";
+
+function toEpochSeconds(value: LatestValues[string]): number | null {
+  const n = typeof value === "number" ? value : Number(value);
+  if (!Number.isFinite(n)) return null;
+  return n > 1e12 ? Math.floor(n / 1000) : n;
+}
 
 function SlaveData({
   slave,
@@ -36,12 +43,24 @@ function SlaveData({
         <dl className="mt-2 grid grid-cols-[auto_1fr] gap-x-6 gap-y-1 text-sm">
           {Object.entries(values)
             .sort(([a], [b]) => a.localeCompare(b))
-            .map(([key, value]) => (
-              <Fragment key={key}>
-                <dt className="text-neutral-500">{key}</dt>
-                <dd className="font-mono">{String(value)}</dd>
-              </Fragment>
-            ))}
+            .map(([key, value]) => {
+              const ts = key === "updatedAt" ? toEpochSeconds(value) : null;
+
+              return (
+                <Fragment key={key}>
+                  <dt className="text-neutral-500">{key}</dt>
+                  <dd className="font-mono">
+                    {ts === null ? (
+                      String(value)
+                    ) : (
+                      <time dateTime={new Date(ts * 1000).toISOString()}>
+                        {formatInstantTime(ts)} WIB
+                      </time>
+                    )}
+                  </dd>
+                </Fragment>
+              );
+            })}
         </dl>
       )}
     </div>
